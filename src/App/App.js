@@ -7,7 +7,7 @@ import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
 import ApiContext from '../ApiContext'
 import dummyStore from '../dummy-store';
-import {getNotesForFolder, findNote, findFolder} from '../notes-helpers';
+import config from '../config'
 import './App.css';
 
 class App extends Component {
@@ -19,10 +19,27 @@ class App extends Component {
     componentDidMount() {
         // fake date loading from API call
         setTimeout(() => this.setState(dummyStore), 600);
+        // Promise.all([
+        //     fetch(`${config.API_ENDPOINT}/notes`),
+        //     fetch(`${config.API_ENDPOINT}/folders`)
+        // ])
+        //     .then(([notesRes, foldersRes]) => {
+        //         if (!notesRes.ok)
+        //             return notesRes.json().then(e => Promise.reject(e));
+        //         if (!foldersRes.ok)
+        //             return foldersRes.json().then(e => Promise.reject(e));
+
+        //         return Promise.all([notesRes.json(), foldersRes.json()]);
+        //     })
+        //     .then(([notes, folders]) => {
+        //         this.setState({notes, folders});
+        //     })
+        //     .catch(error => {
+        //         console.error({error});
+        //     });
     }
 
     renderNavRoutes() {
-        const {notes, folders} = this.state;
         return (
             <>
                 {['/', '/folder/:folderId'].map(path => (
@@ -30,24 +47,10 @@ class App extends Component {
                         exact
                         key={path}
                         path={path}
-                        render={routeProps => (
-                            <NoteListNav
-                                folders={folders}
-                                notes={notes}
-                                {...routeProps}
-                            />
-                        )}
+                        component={NoteListNav}
                     />
                 ))}
-                <Route
-                    path="/note/:noteId"
-                    render={routeProps => {
-                        const {noteId} = routeProps.match.params;
-                        const note = findNote(notes, noteId) || {};
-                        const folder = findFolder(folders, note.folderId);
-                        return <NotePageNav {...routeProps} folder={folder} />;
-                    }}
-                />
+                <Route path="/note/:noteId" component={NotePageNav} />
                 <Route path="/add-folder" component={NotePageNav} />
                 <Route path="/add-note" component={NotePageNav} />
             </>
@@ -55,7 +58,6 @@ class App extends Component {
     }
 
     renderMainRoutes() {
-        const {notes, folders} = this.state;
         return (
             <>
                 {['/', '/folder/:folderId'].map(path => (
@@ -63,29 +65,10 @@ class App extends Component {
                         exact
                         key={path}
                         path={path}
-                        render={routeProps => {
-                            const {folderId} = routeProps.match.params;
-                            const notesForFolder = getNotesForFolder(
-                                notes,
-                                folderId
-                            );
-                            return (
-                                <NoteListMain
-                                    {...routeProps}
-                                    notes={notesForFolder}
-                                />
-                            );
-                        }}
+                        component={NoteListMain}
                     />
                 ))}
-                <Route
-                    path="/note/:noteId"
-                    render={routeProps => {
-                        const {noteId} = routeProps.match.params;
-                        const note = findNote(notes, noteId);
-                        return <NotePageMain {...routeProps} note={note} />;
-                    }}
-                />
+                <Route path="/note/:noteId" component={NotePageMain} />
             </>
         );
     }
