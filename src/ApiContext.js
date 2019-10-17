@@ -2,7 +2,8 @@ import React from 'react'
 
 const ApiContext = React.createContext({
     notes: [],
-    folders: []
+    folders: [],
+    deleteNote: () => {}
 })
 
 export default ApiContext
