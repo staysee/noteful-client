@@ -5,7 +5,9 @@ import ApiContext from '../ApiContext'
 import { findNote, findFolder } from '../notes-helpers'
 import './NotePageNav.css'
 
+
 export default class NotePageNav extends React.Component {
+
   static defaultProps = {
     history: {
       goBack: () => {}
