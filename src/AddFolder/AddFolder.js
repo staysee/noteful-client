@@ -10,18 +10,18 @@ class AddFolder extends React.Component {
         super(props);
         this.state = {
             folderName: {
-                value: '',
+                name: '',
                 touched: false
             }
         }
     }
 
     updateFolderName = folderName => {
-        this.setState({folderName: {value: folderName, touched: true}})
+        this.setState({folderName: {name: folderName, touched: true}})
     }
 
     validateFolderName = fieldValue => {
-        const folderName = this.state.folderName.value.trim();
+        const folderName = this.state.folderName.name.trim();
         if (folderName.length === 0){
             return 'Folder name is required';
         } else if (folderName.length < 2){
@@ -32,32 +32,32 @@ class AddFolder extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         const { folderName } = this.state;
-        console.log(`Folder Name: `, folderName.value);
+        console.log(`Folder Name: `, folderName.name);
 
-        // const url = `${config.API_ENDPOINT}/folders`;
-        // const options = {
-        //     method: 'POST',
-        //     body: JSON.stringify(folderName),
-        //     headers: {
-        //         'content-type': 'application/json'
-        //     }
-        // };
+        const url = `${config.API_ENDPOINT}/folders`;
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(folderName),
+            headers: {
+                'content-type': 'application/json'
+            }
+        };
 
-        // fetch(url, options)
-        //     .then(res => {
-        //         if (!res.ok)
-        //             return res.json().then(e => Promise.reject(e))
-        //         return res.json()
-        //     })
-        //     .then(folder => {
-        //         console.log(folder);
-        //         this.context.addFolder(folder);
-        //     })
-        //     .catch(err => {
-        //         this.setState({
-        //             error: err.message
-        //         })
-        //     })
+        fetch(url, options)
+            .then(res => {
+                if (!res.ok)
+                    return res.json().then(e => Promise.reject(e))
+                return res.json()
+            })
+            .then(newFolder => {
+                console.log(newFolder);
+                this.context.addFolder(newFolder);
+            })
+            .catch(err => {
+                this.setState({
+                    error: err.message
+                })
+            })
     }
 
     render() {
