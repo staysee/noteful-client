@@ -8,14 +8,14 @@ class AddNote extends React.Component {
         const { noteName } = this.state;
         console.log(`Note Name: `, noteName.name);
 
-        const url = `${config.API_ENDPOINT}/notes`;
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(folderName),
-            headers: {
-                'content-type': 'application/json'
-            }
-        };
+        // const url = `${config.API_ENDPOINT}/notes`;
+        // const options = {
+        //     method: 'POST',
+        //     body: JSON.stringify(folderName),
+        //     headers: {
+        //         'content-type': 'application/json'
+        //     }
+        // };
 
         // fetch(url, options)
         //     .then(res => {
