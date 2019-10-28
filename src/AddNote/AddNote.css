@@ -1,0 +1,46 @@
+.AddNote {
+    color: #dedede;
+}
+
+.AddNote h2 {
+    margin-left: 15px;
+}
+
+.AddNote__form {
+    background-color: #1d3656;
+    max-width: 350px;
+    padding: 20px;
+}
+
+.AddNote label {
+    display: block;
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
+.AddNote input {
+    width: 300px;
+    height: 40px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+
+.AddNote button {
+    display: block;
+    border-radius: 5px;
+    border: 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;   
+    background-color: #061325;
+    color: #dedede;
+    text-decoration: none;
+}
+
+.AddNote button:hover {
+    cursor: pointer;
+    background: green;
+}

@@ -6,8 +6,9 @@ import NotePageNav from '../NotePageNav/NotePageNav';
 import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
 import AddFolder from '../AddFolder/AddFolder'
+import AddNote from '../AddNote/AddNote'
 import ApiContext from '../ApiContext'
-import dummyStore from '../dummy-store';
+// import dummyStore from '../dummy-store';
 import config from '../config'
 import './App.css';
 
@@ -43,6 +44,12 @@ class App extends Component {
     handleAddFolder = newFolder => {
         this.setState({
             folders: [...this.state.folders, newFolder]
+        })
+    }
+
+    handleAddNote = newNote => {
+        this.setState({
+            notes: [...this.state.notes, newNote]
         })
     }
 
@@ -83,6 +90,7 @@ class App extends Component {
                 ))}
                 <Route path="/note/:noteId" component={NotePageMain} />
                 <Route path="/add-folder" component={AddFolder} />
+                <Route path="/add-note" component={AddNote} />
             </>
         );
     }

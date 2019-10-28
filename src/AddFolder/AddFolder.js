@@ -1,6 +1,6 @@
 import React from 'react'
 import config from '../config'
-import ValidationError from '../ValidationError/validationError'
+import ValidationError from '../ValidationError/ValidationError'
 import './AddFolder.css'
 
 
@@ -81,7 +81,6 @@ class AddFolder extends React.Component {
                         Add folder
                     </button>
                 </form>
-                
             </div>
 
         )
