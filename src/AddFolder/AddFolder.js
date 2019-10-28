@@ -1,10 +1,11 @@
 import React from 'react'
+import './AddFolder.css'
 
 class AddFolder extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log('handling submit')
+        console.log('Handle Submit.')
         const folderName = event.target.name.value;
         console.log(`Folder Name: `, folderName);
     }
@@ -13,7 +14,7 @@ class AddFolder extends React.Component {
         return (
             <div className="AddFolder">
                 <h2>Create a folder</h2>
-                <form className="add-folder" onSubmit={e => this.handleSubmit(e)}>
+                <form className="AddFolder__form" onSubmit={e => this.handleSubmit(e)}>
                     <label htmlFor="folder-name">Name</label>
                     <input type="text" id="folder-name" name="folder-name" />
 
