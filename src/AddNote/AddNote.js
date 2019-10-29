@@ -2,7 +2,6 @@ import React from 'react'
 import ApiContext from '../ApiContext'
 import config from '../config'
 import './AddNote.css'
-import { throwStatement } from '@babel/types';
 
 class AddNote extends React.Component {
     static contextType = ApiContext;
