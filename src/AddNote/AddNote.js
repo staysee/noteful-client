@@ -2,6 +2,7 @@ import React from 'react'
 import ApiContext from '../ApiContext'
 import config from '../config'
 import './AddNote.css'
+import { throwStatement } from '@babel/types';
 
 class AddNote extends React.Component {
     static contextType = ApiContext;
@@ -9,35 +10,27 @@ class AddNote extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            note: {
-                folderId: '',
-                name: '',
-                content: ''
-            }
+            folderId: '',
+            name: '',
+            content: ''
         }
     }
 
     setNoteName = noteName => {
         this.setState({
-            note: {
-                name: noteName
-            }
+            name: noteName
         })
     }
 
     setNoteContent = noteContent => {
         this.setState({
-            note: {
-                content: noteContent
-            }
+            content: noteContent
         })
     }
 
     setNoteFolder = noteFolderId => {
         this.setState({
-            note: {
-                folderId: noteFolderId
-            }
+            folderId: noteFolderId
         })
     }
 
@@ -48,6 +41,42 @@ class AddNote extends React.Component {
         console.log(`Note Name: `, name);
         console.log(`Content: `, content);
         console.log(`In Folder: `, folderId);
+
+        const newNote = {
+            name: this.state.name,
+            content: this.state.content,
+            folderId: this.state.folderId,
+            modified: new Date()
+        }
+
+        const url = `${config.API_ENDPOINT}/notes`;
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(newNote),
+            headers: {
+                'content-type': 'application/json'
+            }
+        }
+
+        fetch(url, options)
+            .then(res => {
+                if (!res.ok){
+                    console.log('An error did occur. Let\'s throw an error');
+                    throw new Error('Something went wrong')
+                }
+                return res
+            })
+            .then(res => res.json())
+            .then(newNote => {
+                console.log(newNote);
+                this.context.addNote(newNote);
+            })
+            .catch(err => {
+                console.log('Handling error here', err);
+                this.setState({
+                    error: err.message
+                })
+            })
     }
 
     render() {

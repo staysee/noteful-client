@@ -7,7 +7,7 @@ import './AddFolder.css'
 
 class AddFolder extends React.Component {
     static contextType = ApiContext;
-    
+
     constructor(props){
         super(props);
         this.state = {
@@ -52,15 +52,19 @@ class AddFolder extends React.Component {
 
         fetch(url, options)
             .then(res => {
-                if (!res.ok)
-                    return res.json().then(e => Promise.reject(e))
-                return res.json()
+                if (!res.ok){
+                    console.log('An error did occur. Let\'s throw an error');
+                    throw new Error('Something went wrong')
+                }
+                return res
             })
+            .then(res => res.json())
             .then(newFolder => {
                 console.log(newFolder);
                 this.context.addFolder(newFolder);
             })
             .catch(err => {
+                console.log('Handling error here', err);
                 this.setState({
                     error: err.message
                 })
@@ -91,7 +95,6 @@ class AddFolder extends React.Component {
                     </button>
                 </form>
             </div>
-
         )
     }
 }
