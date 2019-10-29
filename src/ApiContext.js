@@ -4,7 +4,8 @@ const ApiContext = React.createContext({
     notes: [],
     folders: [],
     deleteNote: () => {},
-    addFolder: () => {}
+    addFolder: () => {},
+    addNote: () => {}
 })
 
 export default ApiContext

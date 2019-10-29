@@ -1,11 +1,13 @@
 import React from 'react'
 import config from '../config'
+import ApiContext from '../ApiContext'
 import ValidationError from '../ValidationError/ValidationError'
 import './AddFolder.css'
 
 
 class AddFolder extends React.Component {
-
+    static contextType = ApiContext;
+    
     constructor(props){
         super(props);
         this.state = {
@@ -16,8 +18,13 @@ class AddFolder extends React.Component {
         }
     }
 
-    updateFolderName = folderName => {
-        this.setState({folderName: {name: folderName, touched: true}})
+    setFolderName = folderName => {
+        this.setState({
+            folderName: {
+                name: folderName, 
+                touched: true
+            }
+        })
     }
 
     validateFolderName = fieldValue => {
@@ -67,11 +74,13 @@ class AddFolder extends React.Component {
             <div className="AddFolder">
                 <h2>Create a folder</h2>
                 <form className="AddFolder__form" onSubmit={this.handleSubmit}>
-                    <label htmlFor="folder-name">Name</label>
-                    <input type="text" id="folder-name" name="folder-name" onChange={e => this.updateFolderName(e.target.value)} />
-                    {this.state.folderName.touched && (
-                        <ValidationError message={folderNameError} />
-                    )}
+                    <div className="form-group">
+                        <label htmlFor="folder-name">Name</label>
+                        <input type="text" id="folder-name" name="folder-name" onChange={e => this.setFolderName(e.target.value)} />
+                        {this.state.folderName.touched && (
+                            <ValidationError message={folderNameError} />
+                        )}
+                    </div>
                     <button 
                         type="submit"
                         className="AddFolder__button"
@@ -88,8 +97,3 @@ class AddFolder extends React.Component {
 }
 
 export default AddFolder
-
-//captures name of new folder from user
-//form should submit name of new folder to POST /folders endpoint on server
-//ensure any errors properly handled
-//add button to the navigation to invoke new form

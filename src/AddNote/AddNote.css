@@ -25,6 +25,13 @@
     font-size: 14px;
 }
 
+.AddNote select {
+    width: 300px;
+    height: 40px;
+    padding: 8px;
+    font-size: 14px;
+}
+
 
 .AddNote button {
     display: block;
