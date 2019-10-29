@@ -1,5 +1,6 @@
 import React from 'react'
 import ApiContext from '../ApiContext'
+import ValidationError from '../ValidationError/ValidationError'
 import config from '../config'
 import './AddNote.css'
 
@@ -9,42 +10,83 @@ class AddNote extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            folderId: '',
-            name: '',
-            content: ''
+            noteFolder: {
+                folderId: '',
+                touched: false
+            },
+            noteName: {
+                name: '',
+                touched: false
+            },
+            noteContent: {
+                content: '',
+                touched: false
+            }
         }
     }
 
-    setNoteName = noteName => {
+    setNoteName = name => {
         this.setState({
-            name: noteName
+            noteName: {
+                name: name,
+                touched: true
+            }
         })
     }
 
-    setNoteContent = noteContent => {
+    setNoteContent = content => {
         this.setState({
-            content: noteContent
+            noteContent: {
+                content: content,
+                touched: true
+            }
         })
     }
 
-    setNoteFolder = noteFolderId => {
+    setNoteFolder = folderId => {
         this.setState({
-            folderId: noteFolderId
+            noteFolder: {
+                folderId: folderId,
+                touched: true
+            }
         })
+    }
+
+    validateNoteName = fieldValue => {
+        const name = this.state.noteName.name.trim();
+        if (name.length === 0) {
+            return 'Name is required.'
+        } else if (name.length < 2){
+            return 'Name must be at least 2 characters'
+        }
+    }
+    
+    validateNoteContent = fieldValue => {
+        const content = this.state.noteContent.content.trim();
+        if (content.length === 0){
+            return 'Content is required.'
+        }
+    }
+
+    validateNoteFolder = fieldValue => {
+        const folderId = this.state.noteFolder.folderId.trim();
+        if (folderId.length === 0){
+            return 'Folder is required'
+        }
     }
 
     handleSubmit = event => {
         event.preventDefault();
         console.log('adding a new note');
-        const { folderId, name, content } = this.state;
-        console.log(`Note Name: `, name);
-        console.log(`Content: `, content);
-        console.log(`In Folder: `, folderId);
+        const { noteFolder, noteName, noteContent } = this.state;
+        console.log(`Note Name: `, noteName.name);
+        console.log(`Content: `, noteContent.content);
+        console.log(`In Folder: `, noteFolder.folderId);
 
         const newNote = {
-            name: this.state.name,
-            content: this.state.content,
-            folderId: this.state.folderId,
+            name: this.state.noteName.name,
+            content: this.state.noteContent.content,
+            folderId: this.state.noteFolder.folderId,
             modified: new Date()
         }
 
@@ -80,6 +122,9 @@ class AddNote extends React.Component {
 
     render() {
         const { folders } = this.context;
+        const noteNameError = this.validateNoteName;
+        const noteContentError = this.validateNoteContent;
+        const noteFolderIdError = this.validateNoteFolder;
         
         return (
             <div className="AddNote">
@@ -88,11 +133,17 @@ class AddNote extends React.Component {
                     <div className="form-group">
                         <label htmlFor="note-name">Name</label>
                         <input type="text" id="note-name" name="note-name" onChange={e => this.setNoteName(e.target.value)} />
+                        {this.state.noteName.touched && (
+                            <ValidationError message={noteNameError} />
+                        )}
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="note-content">Content</label>
                         <input type="text" id="note-content" name="note-content" onChange={e => this.setNoteContent(e.target.value)} />
+                        {this.state.noteContent.touched && (
+                            <ValidationError message={noteContentError} />
+                        )}
                     </div>
 
                     <div className="form-group">
@@ -105,11 +156,19 @@ class AddNote extends React.Component {
                                 </option>
                             )}
                         </select>
+                        {this.state.noteFolder.touched && (
+                            <ValidationError message={noteFolderIdError} />
+                        )}
                     </div>
 
                     <button 
                         type="submit"
                         className="AddNote__button"
+                        disabled={
+                            this.validateNoteName() ||
+                            this.validateNoteContent() ||
+                            this.validateNoteFolder()
+                        }
                     >
                         Add Note
                     </button>

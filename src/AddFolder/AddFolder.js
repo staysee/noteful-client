@@ -1,7 +1,7 @@
 import React from 'react'
-import config from '../config'
 import ApiContext from '../ApiContext'
 import ValidationError from '../ValidationError/ValidationError'
+import config from '../config'
 import './AddFolder.css'
 
 
