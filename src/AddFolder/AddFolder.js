@@ -1,10 +1,12 @@
 import React from 'react'
-import config from '../config'
+import ApiContext from '../ApiContext'
 import ValidationError from '../ValidationError/ValidationError'
+import config from '../config'
 import './AddFolder.css'
 
 
 class AddFolder extends React.Component {
+    static contextType = ApiContext;
 
     constructor(props){
         super(props);
@@ -16,8 +18,13 @@ class AddFolder extends React.Component {
         }
     }
 
-    updateFolderName = folderName => {
-        this.setState({folderName: {name: folderName, touched: true}})
+    setFolderName = folderName => {
+        this.setState({
+            folderName: {
+                name: folderName, 
+                touched: true
+            }
+        })
     }
 
     validateFolderName = fieldValue => {
@@ -45,15 +52,19 @@ class AddFolder extends React.Component {
 
         fetch(url, options)
             .then(res => {
-                if (!res.ok)
-                    return res.json().then(e => Promise.reject(e))
-                return res.json()
+                if (!res.ok){
+                    console.log('An error did occur. Let\'s throw an error');
+                    throw new Error('Something went wrong')
+                }
+                return res
             })
+            .then(res => res.json())
             .then(newFolder => {
                 console.log(newFolder);
                 this.context.addFolder(newFolder);
             })
             .catch(err => {
+                console.log('Handling error here', err);
                 this.setState({
                     error: err.message
                 })
@@ -67,11 +78,13 @@ class AddFolder extends React.Component {
             <div className="AddFolder">
                 <h2>Create a folder</h2>
                 <form className="AddFolder__form" onSubmit={this.handleSubmit}>
-                    <label htmlFor="folder-name">Name</label>
-                    <input type="text" id="folder-name" name="folder-name" onChange={e => this.updateFolderName(e.target.value)} />
-                    {this.state.folderName.touched && (
-                        <ValidationError message={folderNameError} />
-                    )}
+                    <div className="form-group">
+                        <label htmlFor="folder-name">Name</label>
+                        <input type="text" id="folder-name" name="folder-name" onChange={e => this.setFolderName(e.target.value)} />
+                        {this.state.folderName.touched && (
+                            <ValidationError message={folderNameError} />
+                        )}
+                    </div>
                     <button 
                         type="submit"
                         className="AddFolder__button"
@@ -82,14 +95,8 @@ class AddFolder extends React.Component {
                     </button>
                 </form>
             </div>
-
         )
     }
 }
 
 export default AddFolder
-
-//captures name of new folder from user
-//form should submit name of new folder to POST /folders endpoint on server
-//ensure any errors properly handled
-//add button to the navigation to invoke new form
