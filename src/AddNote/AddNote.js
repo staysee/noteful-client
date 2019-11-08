@@ -86,18 +86,37 @@ class AddNote extends React.Component {
                 <h2>Add a New Note</h2>
                 <form className="AddNote__form" onSubmit={this.handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="note-name">Name</label>
-                        <input type="text" id="note-name" name="note-name" onChange={e => this.setNoteName(e.target.value)} />
+                        <label htmlFor="note-name">Note Name</label>
+                        <input 
+                            type="text" 
+                            id="note-name" 
+                            name="note-name"
+                            aria-required="true"
+                            aria-label="note name"
+                            aria-describedby="noteNameDescription"
+                            onChange={e => this.setNoteName(e.target.value)} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="note-content">Content</label>
-                        <input type="text" id="note-content" name="note-content" onChange={e => this.setNoteContent(e.target.value)} />
+                        <input 
+                            type="text" 
+                            id="note-content" 
+                            name="note-content"
+                            aria-required="true"
+                            aria-label="note content"
+                            aria-describedby="noteContentDescription" 
+                            onChange={e => this.setNoteContent(e.target.value)} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="note-folder">Folder</label>
-                        <select id="note-folder" onChange={e => this.setNoteFolder(e.target.value)} >
+                        <select 
+                            id="note-folder"
+                            aria-required="true"
+                            aria-label="note folder"
+                            aria-describedBy="noteFolderDescription" 
+                            onChange={e => this.setNoteFolder(e.target.value)} >
                             <option value={null}>...</option>
                             {folders.map(folder => 
                                 <option key={folder.id} value={folder.id}>
@@ -113,6 +132,10 @@ class AddNote extends React.Component {
                     >
                         Add Note
                     </button>
+                    
+                    <div id="noteNameDescription">Enter a name for your new note.</div>
+                    <div id="noteContentDescription">Enter the content for your new note.</div>
+                    <div id="noteFolderDescription">Select a folder for your note.</div>
                 </form>
             </div>
         )

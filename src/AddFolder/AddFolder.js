@@ -80,10 +80,18 @@ class AddFolder extends React.Component {
                 <form className="AddFolder__form" onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="folder-name">Name</label>
-                        <input type="text" id="folder-name" name="folder-name" onChange={e => this.setFolderName(e.target.value)} />
+                        <input 
+                            type="text" 
+                            id="folder-name" 
+                            name="folder-name"
+                            aria-required="true"
+                            aria-describedby="newFolderDescription"
+                            aria-label="Enter New Folder Name" 
+                            onChange={e => this.setFolderName(e.target.value)} />
                         {this.state.folderName.touched && (
                             <ValidationError message={folderNameError} />
                         )}
+                        <div id="newFolderDescription">Enter a new folder name</div>
                     </div>
                     <button 
                         type="submit"
