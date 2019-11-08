@@ -51,3 +51,7 @@
     cursor: pointer;
     background: green;
 }
+
+#noteNameDescription, #noteContentDescription, #noteFolderDescription {
+    display: none;
+}

@@ -43,3 +43,7 @@
     cursor: pointer;
     background: green;
 }
+
+#newFolderDescription {
+    display: none;
+}
